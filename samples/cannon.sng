@@ -1,6 +1,6 @@
 % Pachelbel's Cannon in D
 
-TEMPO 80
+TEMPO 100
 CHANNELS 2
 
 BEGINCH 0

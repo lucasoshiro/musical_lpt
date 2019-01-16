@@ -3,7 +3,7 @@ CFLAGS = -Wall -pedantic -O3
 .PHONY: all
 all: mp
 
-mp: mp.c parser.o channel.o song.o note.o
+mp: mp.c parser.o channel.o song.o note.o player.o
 	gcc $(CFLAGS) $^ -o $@ -lpthread -g
 
 %.o: %.c 

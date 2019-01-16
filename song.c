@@ -1,4 +1,5 @@
 #include "song.h"
+#include "note.h"
 #include <stdio.h>
 #include <stdlib.h>
 
