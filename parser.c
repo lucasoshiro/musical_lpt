@@ -7,6 +7,7 @@
 
 static int   parse_figure (char *s);
 static note *parse_note   (char *s);
+static int   next_line    (FILE *f, char *buffer);
 
 static int parse_figure (char *s) {
     const int conv[] = {0, 2, 4, 5, 7, 9, 11};

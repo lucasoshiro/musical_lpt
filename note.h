@@ -8,4 +8,6 @@ typedef struct {
     float duration;
 } note;
 
+void print_note (note n);
+
 #endif
