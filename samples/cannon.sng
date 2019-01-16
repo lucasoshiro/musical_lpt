@@ -1,0 +1,110 @@
+% Pachelbel's Cannon in D
+
+TEMPO 80
+CHANNELS 2
+
+BEGINCH 0
+F# 6 4
+E 6 4
+D 6 4
+C# 6 4
+B 5 4
+A 5 4
+B 5 4
+C 6 4
+
+D 6 4
+C# 6 4
+B 5 4
+A 5 4
+G 5 4
+F# 5 4
+G 5 4
+E 5 4
+
+D 5 2
+F# 5 2
+A 5 2
+G 5 2
+F# 5 2
+D 5 2
+F# 5 2
+E 5 2
+D 5 2
+B 4 2
+D 5 2
+A 5 2
+G 5 2
+B 5 2
+A 5 2
+G 5 2
+F# 5 2
+D 5 2
+E 5 2
+C# 6 2
+D 6 2
+F# 6 2
+A 6 2
+A 5 2
+B 5 2
+G 5 2
+A 5 2
+F# 5 2
+G 5 2
+D 5 2
+D 5 4
+ENDCH 0
+
+BEGINCH 1
+- 32
+
+F# 6 4
+E 6 4
+D 6 4
+C# 6 4
+B 5 4
+A 5 4
+B 5 4
+C 6 4
+
+D 6 4
+C# 6 4
+B 5 4
+A 5 4
+G 5 4
+F# 5 4
+G 5 4
+E 5 4
+
+D 5 2
+F# 5 2
+A 5 2
+G 5 2
+F# 5 2
+D 5 2
+F# 5 2
+E 5 2
+D 5 2
+B 4 2
+D 5 2
+A 5 2
+G 5 2
+B 5 2
+A 5 2
+G 5 2
+F# 5 2
+D 5 2
+E 5 2
+C# 6 2
+D 6 2
+F# 6 2
+A 6 2
+A 5 2
+B 5 2
+G 5 2
+A 5 2
+F# 5 2
+G 5 2
+D 5 2
+D 5 4
+ENDCH 1
