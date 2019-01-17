@@ -1,6 +1,8 @@
 #include "channel.h"
 #include <stdlib.h>
 
+static void list_destroy (note_cell *l);
+
 static void list_destroy (note_cell *l) {
     if (l == NULL) return;
     list_destroy (l->next);

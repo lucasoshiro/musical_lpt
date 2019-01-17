@@ -7,7 +7,7 @@
 static void  secsleep          (float ms);
 static void  play_note         (note n,     int tempo);
 static void  play_channel      (channel *c, int tempo);
-static void *channel_thread_f (void *args);
+static void *channel_thread_f  (void *args);
 
 static void secsleep (float s) {
     struct timespec req;
@@ -29,7 +29,12 @@ static void play_channel (channel *c, int tempo) {
 }
 
 static void *channel_thread_f (void *arg) {
-    struct {channel *c; int tempo; pthread_barrier_t *barrier;} *args = arg;
+    struct {
+        channel           *c;
+        int                tempo;
+        pthread_barrier_t *barrier;
+    } *args = arg;
+
     pthread_barrier_wait ((args->barrier));
     play_channel (args->c, args->tempo);
     return NULL;
@@ -46,7 +51,8 @@ void play_song (song *s) {
     struct {
         channel           *c;
         int                tempo;
-        pthread_barrier_t *barrier;} th_args[32];
+        pthread_barrier_t *barrier;
+    } th_args[32];
         
     for (int i = 0; i < n; i++) {
         th_args[i].c       = s->channels[i];

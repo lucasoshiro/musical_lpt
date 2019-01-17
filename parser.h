@@ -3,5 +3,5 @@
 
 #include "song.h"
 
-song *parse_file  (char *path);
+song *parse_file (char *path);
 #endif

@@ -12,7 +12,6 @@ void song_print (song *s) {
         for (note_cell *cell = s->channels[i]->first;
              cell != NULL;
              cell = cell->next) print_note (cell->n);
-
     }
 }
 
