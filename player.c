@@ -1,10 +1,13 @@
 #include "player.h"
 #include <unistd.h>
 #include <time.h>
+#include <pthread.h>
+#include <stdio.h>
 
-static void secsleep     (float ms);
-static void play_note    (note n,     int tempo);
-static void play_channel (channel *s, int tempo);
+static void  secsleep          (float ms);
+static void  play_note         (note n,     int tempo);
+static void  play_channel      (channel *c, int tempo);
+static void *channel_thread_f (void *args);
 
 static void secsleep (float s) {
     struct timespec req;
@@ -19,12 +22,44 @@ static void play_note (note n, int tempo) {
     secsleep (duration_s);
 }
 
-static void play_channel (channel *s, int tempo) {
-    for (note_cell *cell = s->first;
+static void play_channel (channel *c, int tempo) {
+    for (note_cell *cell = c->first;
          cell != NULL;
          cell = cell->next) play_note (cell->n, tempo);
 }
 
+static void *channel_thread_f (void *args) {
+    struct {channel *c; int tempo; pthread_barrier_t *barrier;} *a = args;
+    pthread_barrier_wait ((a->barrier));
+    play_channel (a->c, a->tempo);
+    return NULL;
+}
+
 void play_song (song *s) {
-    play_channel (s->channels[0], s->tempo);
+    pthread_t         threads[32];
+    pthread_barrier_t barrier;
+
+    int n = s->n_ch;
+    
+    pthread_barrier_init (&barrier, NULL, s->n_ch);
+
+    struct {
+        channel            *c;
+        int                tempo;
+        pthread_barrier_t *barrier;} th_args[32];
+
+    for (int i = 0; i < n; i++) {
+        th_args[i].c       = s->channels[i];
+        th_args[i].tempo   = s->tempo;
+        th_args[i].barrier = &barrier;
+
+        threads[i] = pthread_create (threads + i, NULL,
+                                     channel_thread_f,
+                                     (void *)(th_args + i));
+    }
+
+    for (;;);
+
+    /* for (int i = 0; i < n; i++) */
+    /*     pthread_join (threads[i], NULL); */
 }
