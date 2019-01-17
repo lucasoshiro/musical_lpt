@@ -28,10 +28,10 @@ static void play_channel (channel *c, int tempo) {
          cell = cell->next) play_note (cell->n, tempo);
 }
 
-static void *channel_thread_f (void *args) {
-    struct {channel *c; int tempo; pthread_barrier_t *barrier;} *a = args;
-    pthread_barrier_wait ((a->barrier));
-    play_channel (a->c, a->tempo);
+static void *channel_thread_f (void *arg) {
+    struct {channel *c; int tempo; pthread_barrier_t *barrier;} *args = arg;
+    pthread_barrier_wait ((args->barrier));
+    play_channel (args->c, args->tempo);
     return NULL;
 }
 
@@ -40,26 +40,23 @@ void play_song (song *s) {
     pthread_barrier_t barrier;
 
     int n = s->n_ch;
-    
+
     pthread_barrier_init (&barrier, NULL, s->n_ch);
 
     struct {
-        channel            *c;
+        channel           *c;
         int                tempo;
         pthread_barrier_t *barrier;} th_args[32];
-
+        
     for (int i = 0; i < n; i++) {
         th_args[i].c       = s->channels[i];
         th_args[i].tempo   = s->tempo;
         th_args[i].barrier = &barrier;
 
-        threads[i] = pthread_create (threads + i, NULL,
-                                     channel_thread_f,
-                                     (void *)(th_args + i));
+        pthread_create (threads + i, NULL,
+                        channel_thread_f,
+                        (void *) (th_args + i));
     }
-
-    for (;;);
-
-    /* for (int i = 0; i < n; i++) */
-    /*     pthread_join (threads[i], NULL); */
+    
+    for (int i = 0; i < n; i++) pthread_join (threads[i], NULL);
 }
