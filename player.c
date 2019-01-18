@@ -1,10 +1,13 @@
 #include "player.h"
+#include "tone.h"
 #include <unistd.h>
 #include <time.h>
 #include <pthread.h>
 #include <stdio.h>
+#include <math.h>
 
 static void  secsleep          (float ms);
+static int   note_freq         (note n);
 static void  play_note         (note n,     int tempo);
 static void  play_channel      (channel *c, int tempo);
 static void *channel_thread_f  (void *args);
@@ -16,10 +19,26 @@ static void secsleep (float s) {
     nanosleep (&req, NULL);
 }
 
+static int note_freq (note n) {
+    const float C0       = 16.351597831287418;
+    const float base_exp = 1.0594630943592953;
+    
+    int octave_mult = 1 << n.octave;
+    
+    return octave_mult * (C0 * pow (base_exp, n.figure));
+}
+
 static void play_note (note n, int tempo) {
+    int   freq       = note_freq (n);
     float duration_s = n.duration / ((float) tempo / 60.);
+    float interval_s = duration_s / 20;
+
     print_note (n);
-    secsleep (duration_s);
+    if (!n.silence) {
+        tone (freq, duration_s - interval_s);
+        secsleep (interval_s);
+    }
+    else secsleep (duration_s);
 }
 
 static void play_channel (channel *c, int tempo) {
@@ -46,13 +65,15 @@ void play_song (song *s) {
 
     int n = s->n_ch;
 
-    pthread_barrier_init (&barrier, NULL, s->n_ch);
-
     struct {
         channel           *c;
         int                tempo;
         pthread_barrier_t *barrier;
     } th_args[32];
+
+    pthread_barrier_init (&barrier, NULL, n);
+
+    lpt_init ();
         
     for (int i = 0; i < n; i++) {
         th_args[i].c       = s->channels[i];
@@ -66,3 +87,4 @@ void play_song (song *s) {
     
     for (int i = 0; i < n; i++) pthread_join (threads[i], NULL);
 }
+

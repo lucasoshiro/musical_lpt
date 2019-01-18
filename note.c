@@ -26,3 +26,4 @@ void print_note (note n) {
             n.duration);
     
 }
+

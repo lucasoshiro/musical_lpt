@@ -3,7 +3,7 @@
 
 typedef struct {
     int   silence;
-    int   figure;
+    int   figure;               /* half-tones. 0 = C */
     int   octave;
     float duration;
 } note;
@@ -11,3 +11,4 @@ typedef struct {
 void print_note (note n);
 
 #endif
+

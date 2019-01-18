@@ -18,3 +18,4 @@ void     channel_destroy (channel *ch);
 void     insert_note     (channel *ch, note n);
 
 #endif
+
