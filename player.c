@@ -8,8 +8,8 @@
 
 static void  secsleep          (float ms);
 static int   note_freq         (note n);
-static void  play_note         (note n,     int tempo);
-static void  play_channel      (channel *c, int tempo);
+static void  play_note         (note n,     int tempo, int c);
+static void  play_channel      (channel *c, int tempo, int c_number);
 static void *channel_thread_f  (void *args);
 
 static void secsleep (float s) {
@@ -28,23 +28,23 @@ static int note_freq (note n) {
     return octave_mult * (C0 * pow (base_exp, n.figure));
 }
 
-static void play_note (note n, int tempo) {
+static void play_note (note n, int tempo, int c) {
     int   freq       = note_freq (n);
     float duration_s = n.duration / ((float) tempo / 60.);
     float interval_s = duration_s / 20;
 
     print_note (n);
     if (!n.silence) {
-        tone (freq, duration_s - interval_s);
+        tone (freq, duration_s - interval_s, 0x1 << c);
         secsleep (interval_s);
     }
     else secsleep (duration_s);
 }
 
-static void play_channel (channel *c, int tempo) {
+static void play_channel (channel *c, int tempo, int c_number) {
     for (note_cell *cell = c->first;
          cell != NULL;
-         cell = cell->next) play_note (cell->n, tempo);
+         cell = cell->next) play_note (cell->n, tempo, c_number);
 }
 
 static void *channel_thread_f (void *arg) {
@@ -52,10 +52,11 @@ static void *channel_thread_f (void *arg) {
         channel           *c;
         int                tempo;
         pthread_barrier_t *barrier;
+        int                c_number;
     } *args = arg;
 
     pthread_barrier_wait ((args->barrier));
-    play_channel (args->c, args->tempo);
+    play_channel (args->c, args->tempo, args->c_number);
     return NULL;
 }
 
@@ -69,6 +70,7 @@ void play_song (song *s) {
         channel           *c;
         int                tempo;
         pthread_barrier_t *barrier;
+        int                c_number;
     } th_args[32];
 
     pthread_barrier_init (&barrier, NULL, n);
@@ -76,9 +78,10 @@ void play_song (song *s) {
     lpt_init ();
         
     for (int i = 0; i < n; i++) {
-        th_args[i].c       = s->channels[i];
-        th_args[i].tempo   = s->tempo;
-        th_args[i].barrier = &barrier;
+        th_args[i].c        = s->channels[i];
+        th_args[i].tempo    = s->tempo;
+        th_args[i].barrier  = &barrier;
+        th_args[i].c_number = i;
 
         pthread_create (threads + i, NULL,
                         channel_thread_f,

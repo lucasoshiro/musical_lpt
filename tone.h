@@ -15,7 +15,7 @@ typedef enum {D0 = 0x01,
 
 void lpt_init ();
 
-void tone (int freq, double duration);
+void tone (int freq, double duration, parallel_pin pin);
 
 #endif
 
