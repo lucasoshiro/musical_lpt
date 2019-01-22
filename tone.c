@@ -33,11 +33,11 @@ void tone (int freq, double duration, parallel_pin pin) {
     long half_period = 500000000 / freq;
     pthread_t tone_thread;
 
-    struct timespec freq_delay;
+    struct timespec freq_delay = {0, half_period};
     freq_delay.tv_sec = 0;
     freq_delay.tv_nsec = half_period;
 
-    struct timespec  tempo_delay;
+    struct timespec tempo_delay;
     tempo_delay.tv_sec = (int) duration;
     tempo_delay.tv_nsec = (duration - tempo_delay.tv_sec) * 1e9;
 
@@ -50,9 +50,7 @@ void tone (int freq, double duration, parallel_pin pin) {
     arg->pin = pin;
 
     pthread_create (&tone_thread, NULL, tone_thread_f, arg);
-
     nanosleep (&tempo_delay, NULL);
-
     pthread_cancel (tone_thread);
 
     free (arg);

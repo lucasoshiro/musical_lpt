@@ -6,11 +6,12 @@
 #include <stdio.h>
 #include <math.h>
 
-static void  secsleep          (float ms);
-static int   note_freq         (note n);
-static void  play_note         (note n,     int tempo, int c);
-static void  play_channel      (channel *c, int tempo, int c_number);
-static void *channel_thread_f  (void *args);
+static void  secsleep          (float    ms);
+static int   note_freq         (note     n);
+static int   tune              (int      freq);
+static void  play_note         (note     n,    int tempo, int c);
+static void  play_channel      (channel *c,    int tempo, int c_number);
+static void *channel_thread_f  (void    *args);
 
 static void secsleep (float s) {
     struct timespec req;
@@ -28,8 +29,12 @@ static int note_freq (note n) {
     return octave_mult * (C0 * pow (base_exp, n.figure));
 }
 
+static int tune (int freq) {
+    return freq;
+}
+
 static void play_note (note n, int tempo, int c) {
-    int   freq       = note_freq (n);
+    int   freq       = tune (note_freq (n));
     float duration_s = n.duration / ((float) tempo / 60.);
     float interval_s = duration_s / 20;
 

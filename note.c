@@ -24,6 +24,5 @@ void print_note (note n) {
             n.silence ? "-" : buffer,
             n.silence ? ' ' : '0' + n.octave,
             n.duration);
-    
 }
 
