@@ -13,15 +13,14 @@
 unsigned char state = 0;
 
 static void *tone_thread_f (void *arg) {
-    unsigned char state = 0;
-        struct {
+    struct {
         struct timespec freq_delay;
         parallel_pin pin;
-        } *args = arg;
+    } *args = arg;
 
     for (;;) {
-        set_lpt_val (state ^= args->pin); nanosleep (&(args->freq_delay), NULL);
-        set_lpt_val (state ^= args->pin); nanosleep (&(args->freq_delay), NULL);
+        set_lpt_val (state ^= args->pin);
+        nanosleep (&(args->freq_delay), NULL);
     }
     return NULL;
 }

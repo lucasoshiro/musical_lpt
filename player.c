@@ -61,7 +61,7 @@ static void *channel_thread_f (void *arg) {
 }
 
 void play_song (song *s) {
-    pthread_t         threads[32];
+    pthread_t         threads[8];
     pthread_barrier_t barrier;
 
     int n = s->n_ch;
