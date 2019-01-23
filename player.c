@@ -30,7 +30,8 @@ static int note_freq (note n) {
 }
 
 static int tune (int freq) {
-    return freq;
+    const float magic = 0.013; /* May be different on your machine */
+    return magic * magic * freq * freq + freq;
 }
 
 static void play_note (note n, int tempo, int c) {
