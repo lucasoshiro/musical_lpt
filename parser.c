@@ -93,11 +93,8 @@ song *parse_file (char *path) {
         else if (in_ch) {
             note *n = parse_note (buffer);
             if (n == NULL) continue;
-
             insert_note (*ch, *n);
-
             free (n);
-            continue;
         }
     }
     
@@ -107,7 +104,7 @@ song *parse_file (char *path) {
         s = malloc (sizeof *s + (n_ch - 1) * sizeof (channel *));
         s->n_ch  = n_ch;
         s->tempo = tempo;
-        memcpy(s->channels, chs, n_ch * sizeof (channel *));
+        memcpy (s->channels, chs, n_ch * sizeof (channel *));
     }
 
     return s;
