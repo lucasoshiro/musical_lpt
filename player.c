@@ -13,6 +13,9 @@ static void  play_note         (note     n,    int tempo, int c);
 static void  play_channel      (channel *c,    int tempo, int c_number);
 static void *channel_thread_f  (void    *args);
 
+int silent  = 0;
+int verbose = 0;
+
 static void secsleep (float s) {
     struct timespec req;
     req.tv_sec  = s;
@@ -39,7 +42,7 @@ static void play_note (note n, int tempo, int c) {
     float duration_s = n.duration / ((float) tempo / 60.);
     float interval_s = duration_s / 20;
 
-    print_note (n);
+    if (verbose) print_note (n);
     if (!n.silence) {
         tone (freq, duration_s - interval_s, 0x1 << c);
         secsleep (interval_s);
@@ -81,7 +84,7 @@ void play_song (song *s) {
 
     pthread_barrier_init (&barrier, NULL, n);
 
-    lpt_init ();
+    if (!silent) lpt_init ();
         
     for (int i = 0; i < n; i++) {
         th_args[i].c        = s->channels[i];

@@ -5,6 +5,7 @@
 #include <sys/io.h>
 #include <time.h>
 #include <pthread.h>
+#include "player.h"
 
 #define BASE 0x378
 
@@ -49,9 +50,11 @@ void tone (int freq, double duration, parallel_pin pin) {
     arg->freq_delay = freq_delay;
     arg->pin = pin;
 
-    pthread_create (&tone_thread, NULL, tone_thread_f, arg);
+    if (!silent) pthread_create (&tone_thread, NULL, tone_thread_f, arg);
+    
     nanosleep (&tempo_delay, NULL);
-    pthread_cancel (tone_thread);
+    
+    if (!silent) pthread_cancel (tone_thread);
 
     free (arg);
 }
