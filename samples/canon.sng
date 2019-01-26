@@ -1,7 +1,7 @@
-% Pachelbel's Cannon in D
+% Pachelbel's Canon in D
 
 TEMPO 140
-CHANNELS 2
+CHANNELS 1
 
 BEGINCH 0
 
@@ -332,7 +332,6 @@ D 5 4
 ENDCH 0
 
 BEGINCH 1
-- 32
 
 F# 6 4
 
@@ -520,7 +519,7 @@ C# 5 4
 - 2
 B 4 2
 
-D 5 2
+D 5 4
 
 B 5 4
 
@@ -549,7 +548,7 @@ G 5 0.5
 F# 5 1
 D 5 0.5
 E 5 0.5
-F# 4 1
+F# 5 1
 F# 4 0.5
 G 4 0.5
 
@@ -578,7 +577,7 @@ G 4 0.5
 A 4 0.5
 B 4 0.5
 
-G 4 0.5
+G 4 1
 B 4 0.5
 A 4 0.5
 B 4 1
@@ -641,7 +640,7 @@ G 4 0.5
 A 4 0.5
 B 4 0.5
 
-G 4 0.5
+G 4 1
 B 4 0.5
 A 4 0.5
 B 4 1
@@ -659,4 +658,3 @@ C# 5 0.5
 
 D 5 4
 ENDCH 1
-
